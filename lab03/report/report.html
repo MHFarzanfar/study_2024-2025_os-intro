@@ -1,0 +1,112 @@
+<h1 id="front-matter">Front matter</h1>
+<p>lang: ru-RU<br />
+title: “Лабораторная работа №3”<br />
+subtitle: “Дисциплина: Математические основы защиты информации и
+информационной безопасности”<br />
+author: “Мохаммад хоссейн фарзанфар”</p>
+<h1 id="formatting">Formatting</h1>
+toc-title: “Содержание”<br />
+toc: true # Table of contents<br />
+toc_depth: 2<br />
+lof: true # Список рисунков<br />
+lot: true # Список таблиц<br />
+fontsize: 12pt<br />
+linestretch: 1.5<br />
+papersize: a4paper<br />
+documentclass: scrreprt<br />
+polyglossia-lang: russian<br />
+polyglossia-otherlangs: english<br />
+mainfont: PT Serif<br />
+romanfont: PT Serif<br />
+sansfont: PT Sans<br />
+monofont: PT Mono<br />
+mainfontoptions: Ligatures=TeX<br />
+romanfontoptions: Ligatures=TeX<br />
+sansfontoptions: Ligatures=TeX,Scale=MatchLowercase<br />
+monofontoptions: Scale=MatchLowercase<br />
+indent: true<br />
+pdf-engine: lualatex<br />
+header-includes: - - - - - - - - - - - - - = 20000 - -
+<ul>
+<li></li>
+</ul>
+<hr />
+<h1 id="цель-работы">Цель работы</h1>
+<p>Познакомиться с шифрованием с помощью XOR и генерацией ключей с
+использованием линейного конгруэнтного генератора (LCG).</p>
+<h1 id="задание">Задание</h1>
+<ol type="1">
+<li>Программно реализовать шифрование с помощью XOR.</li>
+<li>Программно реализовать расшифровку с помощью XOR.</li>
+<li>Программно реализовать генерацию ключей с использованием линейного
+конгруэнтного генератора (LCG).</li>
+</ol>
+<h1 id="выполнение-лабораторной-работы">Выполнение лабораторной
+работы</h1>
+<ol type="1">
+<li>Все шифрования были реализованы на языке Julia. Сначала я создал
+функцию <code>xor_encrypt</code>, которая реализует побитовое сложение
+(XOR) между символами текста и ключа. Для расшифровки текста
+используется та же функция, так как операция XOR обратима.</li>
+</ol>
+<h3 id="реализация-функции-шифрования-xor">Реализация функции шифрования
+XOR</h3>
+<p>```julia function xor_encrypt(plaintext::String, key::String) if
+length(key) &lt; length(plaintext) error(“Key must be as long as or
+longer than the plaintext.”) end</p>
+<pre><code>encrypted = [Char(codepoint(plaintext[i]) ⊻ codepoint(key[i])) for i in 1:length(plaintext)]
+return join(encrypted)</code></pre>
+<p>end ```</p>
+<h3 id="тестирование-шифрования-и-расшифровки">Тестирование шифрования и
+расшифровки</h3>
+<h4 id="шаг-1-шифрование">Шаг 1: Шифрование</h4>
+<p><strong>Пример 1:</strong><br />
+Текст для шифрования: <code>Привет</code><br />
+Ключ для шифрования: <code>ключ123</code></p>
+<p><strong>Вывод программы:</strong></p>
+<p>```plaintext Зашифрованный текст: %ƛvuЄΨ ```</p>
+<figure>
+<img src="image/imj00.png" alt="Результат генерации ключей LCG" />
+<figcaption aria-hidden="true">Результат генерации ключей
+LCG</figcaption>
+</figure>
+<h4 id="шаг-2-расшифровка">Шаг 2: Расшифровка</h4>
+<p><strong>Пример 2:</strong><br />
+Зашифрованный текст: <code>%ƛvuЄΨ</code><br />
+Ключ для расшифровки: <code>ключ123</code></p>
+<p><strong>Вывод программы:</strong></p>
+<p>```plaintext Расшифрованный текст: Привет ``` <img
+src="image/imj01.png" alt="Результат генерации ключей LCG" /></p>
+<ol start="2" type="1">
+<li>Далее я реализовал генерацию ключей с использованием линейного
+конгруэнтного генератора (LCG). Для этого была создана функция
+<code>lcg</code>, которая генерирует последовательность псевдослучайных
+чисел на основе параметров a, b, m и seed.</li>
+</ol>
+<h3 id="реализация-lcg">Реализация LCG</h3>
+<p>```julia function lcg(a, b, m, seed, length) random_sequence = Int[]
+yi = seed for i in 1:length yi = (a * yi + b) % m push!(random_sequence,
+yi) end return random_sequence end ```</p>
+<h3 id="тестирование-генерации-ключей">Тестирование генерации
+ключей</h3>
+<p><strong>Пример 3:</strong><br />
+Параметры LCG:<br />
+<code>a = 5</code>,<br />
+<code>b = 3</code>,<br />
+<code>m = 16</code>,<br />
+<code>seed = 7</code>,<br />
+<code>длина = 6</code></p>
+<p><strong>Сгенерированная последовательность:</strong></p>
+<p>```plaintext [6, 1, 8, 11, 10, 5] ``` <img src="image/imj02.png"
+alt="Результат генерации ключей LCG" /></p>
+<ol start="5" type="1">
+<li>Для удобства пользователя был создан интерактивный интерфейс с меню,
+позволяющим выбрать операцию: шифрование, расшифровка или генерация
+ключа.</li>
+</ol>
+<h1 id="выводы">Выводы</h1>
+<p>Я успешно реализовал шифрование с использованием XOR и генерацию
+ключей с помощью линейного конгруэнтного генератора (LCG). Все функции
+были протестированы на примерах с использованием русского текста.
+Результаты тестов показали, что шифрование и расшифровка работают
+корректно, а генерация ключей выдает ожидаемые результаты.</p>
